@@ -17,61 +17,8 @@ driver.get(website)
 username = driver.find_element(By.XPATH, '//input[@id="username"]')
 password = driver.find_element(By.XPATH, '//input[@id="password"]')
 
-username.send_keys('saurav15-11851@diu.edu.bd')
-password.send_keys('saikatdas075')
+username.send_keys('')
+password.send_keys('')
 
 login_button = driver.find_element(By.XPATH, '//button[@aria-label="Sign in"]')
 login_button.click()
-
-# search_button = driver.find_element(By.XPATH, '//button[contains(@class,
-# "search-global-typeahead__collapsed-search-button")]/span') search_button.click() search_button.send_keys('phd
-# professor') search_button.click() login_box = driver.find_element(By.XPATH, '//div[@class="_6ltg"]//button[
-# @id="u_0_5_bX"]')
-
-search_term = input("What you want to search?")
-linkedin_search_baseurl = 'https://www.linkedin.com/search/results/people/?keywords='
-driver.get(linkedin_search_baseurl + search_term)
-
-# pagination = driver.find_element(By.XPATH, '//ul[@role="list"]')
-# pages = pagination.find_elements(By.TAG_NAME, 'li')
-# last_page = int(pagination.text)
-last_page = 5
-
-book_title = []
-book_author = []
-book_length = []
-current_page = 1
-
-while current_page <= last_page:
-    # Implicit Wait
-    time.sleep(5)
-    # Explicit Wait
-    # container = driver.find_element_by_class_name('adbl-impression-container ')
-    container = WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH, '//div[contains(@class, "artdeco-card")]//ul[@role="list"]')))
-    products = container.find_elements(By.XPATH, './li')
-    # products = WebDriverWait(container, ).until(EC.presence_of_all_elements_located((By.XPATH, './li')))
-
-    for product in products:
-        try:
-            book_title.append(product.find_element(By.XPATH, ".//span[@dir='ltr'][1]").text)
-            #print(book_title)
-        except:
-            pass
-
-    current_page = current_page + 1
-    try:
-        next_button = WebDriverWait(driver, 15).until(
-                EC.element_to_be_clickable((By.XPATH, '//button[@aria-label="Next"]'))
-            )
-        next_button.click()
-        time.sleep(3)
-        # print("Click button")
-    except:
-        pass
-
-df_books = pd.DataFrame({'name': book_title})
-print(df_books)
-
-# Save to CSV
-df_books = pd.DataFrame({'title': book_title})
-df_books.to_csv('prof_name_sourov.csv', index=False)
